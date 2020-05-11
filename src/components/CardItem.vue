@@ -1,8 +1,10 @@
 <template>
   <div v-on:click="flipCard" class="card">
-    <div class="card-content">
-      <p v-if="this.card.frontflip===true" class="title">{{card.front}}</p>
-      <p v-else class="subtitle" id="card-back">{{card.back}}</p>
+    <div v-if="this.card.frontflip === true" class="card-content">
+      <p class="title">{{ card.front }}</p>
+    </div>
+    <div v-else id="card-back" class="card-content">
+      <p class="subtitle">{{ card.back }}</p>
     </div>
   </div>
 </template>
@@ -28,6 +30,8 @@ export default {
 
 #card-back {
   background-color: #e0dede;
+  width: 250px;
+  height: 250px;
+  left: 0px;
 }
 </style>
-

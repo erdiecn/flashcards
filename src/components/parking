@@ -1,0 +1,35 @@
+<template>
+  <div id="app">
+    <CardItem />
+    <Cards />
+    <Decks v-on:delete-deck="deleteDeck" />
+  </div>
+</template>
+
+<script>
+import Cards from "./components/Cards";
+import Decks from "./components/Decks";
+import CardItem from "./components/CardItem";
+
+export default {
+  name: "App",
+  components: {
+    Cards,
+    Decks,
+    CardItem
+  },
+  methods: {
+    deleteDeck(id) {
+      this.decks = this.decks.filter(deck => deck.id !== id);
+    },
+    addDeck(newDeck) {
+      this.decks = [...this.decks, newDeck];
+      console.log("If this works the array is not being updated");
+    }
+  }
+};
+</script>
+
+<style>
+@import "./index.css";
+</style>

@@ -1,19 +1,24 @@
 <template>
   <div class="deck-body">
-    <div v-bind:key="deck.id" v-for="deck in decks">
-      <DeckItem
-        v-bind:deck="deck"
-        class="deck-item"
-        v-on:delete-deck="$emit('delete-deck', deck.id)"
-      />
+    <div class="deck-body">
+      <div v-bind:key="deck.id" v-for="deck in allDecks">
+        <DeckItem
+          v-bind:deck="deck"
+          class="deck-item"
+          v-on:delete-deck="$emit('delete-deck', deck.id)"
+        />
+      </div>
+      <div class="add-deck" aria-label="Add New Deck" v-on:click="openModal">
+        <h1>+</h1>
+        <h2>Add New Deck</h2>
+      </div>
+      <DeckForm ref="DeckForm"></DeckForm>
     </div>
-    <div class="add-deck" aria-label="Add New Deck" v-on:click="openModal">Add Icon</div>
-    <DeckForm v-on:add-deck="$emit('add-deck', newDeck)" ref="DeckForm
-      "></DeckForm>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DeckItem from "./DeckItem";
 import DeckForm from "./DeckForm";
 
@@ -23,7 +28,7 @@ export default {
     DeckItem,
     DeckForm
   },
-  props: ["decks"],
+  computed: mapGetters(["allDecks"]),
   methods: {
     openModal(event) {
       event.preventDefault();
@@ -40,6 +45,8 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
+  height: 600px;
+
   /* background-color: black; */
 }
 
@@ -51,7 +58,22 @@ export default {
   width: 250px;
   height: 350px;
   background-color: #f5f4f3;
-  position: relative;
   margin: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  bottom: 25px;
+}
+h1 {
+  font-size: 200px;
+}
+
+@media only screen and (max-width: 500px) {
+  .deck-body {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+  }
 }
 </style>

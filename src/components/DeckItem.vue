@@ -1,11 +1,13 @@
 <template>
   <div class="deck" v-bind:class="{ 'is-deactivated': deck.deactivated }">
-    <div class="deck-image">{{ deck.image }}</div>
+    <router-link :to="'cards'">
+      <div class="deck-image">{{ deck.image }}</div>
+    </router-link>
     <button class="button" v-on:click="activateMenu" aria-label="menu button">
       Menu
     </button>
     <h1>{{ deck.title }}</h1>
-    <aside v-if="menuActive === true" class="menu">
+    <div v-on:click="activateMenu" v-if="menuActive === true" class="menu">
       <ul class="menu-list">
         <li v-if="this.deck.deactivated === false">
           <a v-on:click="deactivateDeck">Deactivate Deck</a>
@@ -18,20 +20,20 @@
           <a>Edit Deck</a>
         </li>
         <li>
-          <a class="delete-deck" @click="$emit('delete-deck', deck.id)"
-            >Delete Deck</a
-          >
+          <a class="delete-deck" @click="deleteDeck(deck.id)">Delete Deck</a>
           <!-- emits are a way to reach data further up the tree, check the Vue dev tools to look at the event going back up -->
         </li>
-        <li>
+        <!-- <li>
           <a>Deactivate All Decks</a>
-        </li>
+        </li>-->
       </ul>
-    </aside>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "DeckItem",
   props: ["deck"], // props move down
@@ -41,6 +43,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["deleteDeck"]),
     activateMenu(event) {
       event.preventDefault;
       this.menuActive = !this.menuActive;
@@ -90,7 +93,7 @@ h1 {
   padding: 10px;
   position: absolute;
   top: 0px;
-  left: 250px;
+  right: 0px;
   z-index: 99;
   width: 80%;
   box-shadow: 2px 2px 8px #888888;

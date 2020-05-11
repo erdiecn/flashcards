@@ -1,38 +1,34 @@
 // import axios from 'axios' for when it is needed
 
+import decks from "../../data/decks";
+import cards from "../../data/cards";
+
 const state = {
-  card: [
-    {
-      id: 1,
-      front: "this is the front 1",
-      back: "This is the back 1",
-      mastered: false,
-      frontflip: true
-    },
-    {
-      id: 2,
-      front: "this is the front 2",
-      back: "This is the back 2",
-      mastered: false,
-      frontflip: true
-    },
-    {
-      id: 3,
-      front: "this is the front 3",
-      back: "This is the back 3",
-      mastered: false,
-      frontflip: false
-    }
-  ]
+  decks,
+  cards
 };
 
 const getters = {
-  allCards: state => state.cards
+  allCards: state => state.cards,
+  allDecks: state => state.decks
 };
+const actions = {
+  addDeck({ commit }, payload) {
+    // const response = { title, deactivated: false, id: 5 };
 
-const actions = {};
+    commit("newDeck", payload);
+  },
 
-const mutations = {};
+  deleteDeck({ commit }, id) {
+    commit("removeDeck", id);
+  }
+}; // this is where you make a call to the api
+
+const mutations = {
+  newDeck: (state, deck) => state.decks.push(deck),
+  removeDeck: (state, id) =>
+    (state.decks = state.decks.filter(deck => deck.id !== id))
+};
 
 export default {
   state,

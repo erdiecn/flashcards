@@ -2,13 +2,14 @@
 
 <template>
   <div class="cards-body">
-    <div v-bind:key="card.id" v-for="card in cards">
+    <div v-bind:key="card.id" v-for="card in allCards">
       <CardItem v-bind:card="card" class="card-item" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import CardItem from "./CardItem";
 
 export default {
@@ -16,7 +17,7 @@ export default {
   components: {
     CardItem
   },
-  props: ["cards"]
+  computed: mapGetters(["allCards"])
 };
 </script>
 
@@ -31,4 +32,4 @@ export default {
 .card-item {
   margin: 20px 20px;
 }
-</style> 
+</style>

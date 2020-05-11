@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form v-if="showModal" class="modal is-active" v-on:submit="addDeck">
+    <form v-if="showModal" class="modal is-active" v-on:submit.prevent="onSubmit">
       <div class="modal-background" v-on:click="hide"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -12,11 +12,7 @@
           <div class="field">
             <label class="label">Title</label>
             <div class="control">
-              <textarea
-                class="input"
-                placeholder="Module Title"
-                v-model="title"
-              ></textarea>
+              <textarea class="input" placeholder="Module Title" v-model="deckForm.title"></textarea>
             </div>
           </div>
           <div class="field">
@@ -25,9 +21,9 @@
               <textarea
                 class="input"
                 placeholder="Click browse to add .csv file"
-                v-model="csv"
+                v-model="deckForm.csv"
               ></textarea>
-              <button class="button">Browse</button>
+              <button class="button is-info is-light is-small">Browse</button>
             </div>
           </div>
           <!-- <div class="field">
@@ -40,10 +36,10 @@
               ></textarea>
               <button class="button small">Browse</button>
             </div>
-          </div> -->
+          </div>-->
 
-          <div class="control">
-            <input class="button" type="submit" value="Submit" />
+          <div class="buttons has-addons is-right">
+            <input class="button is-info" type="submit" value="Submit" />
           </div>
         </section>
       </div>
@@ -52,37 +48,43 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid"; ///don't need this when using backend database
+// import { v4 as uuidv4 } from "uuid"; ///don't need this when using backend database
+import { mapActions } from "vuex";
 
 export default {
   name: "DeckForm",
   data() {
     return {
       showModal: false,
-      title: "",
-      csv: "",
-      img: ""
+      deckForm: {
+        title: "",
+        csv: ""
+      }
     };
   },
   methods: {
+    ...mapActions(["addDeck"]),
     show() {
       this.showModal = true;
     },
     hide() {
       this.showModal = false;
     },
-    addDeck(event) {
-      event.preventDefault();
-      const newdeck = {
-        id: uuidv4(),
-        title: this.title,
-        csv: this.csv,
+
+    onSubmit() {
+      const { title, csv } = this.deckForm;
+      const payload = {
+        title,
+        csv,
         deactivated: false
       };
-      // send this the the parent, use emit
-      this.$emit("add-deck", this.newdeck);
-      console.log(newdeck);
-      // newDeck is being created, why isn't it being emitted when it just worked???????
+      this.addDeck(payload);
+
+      this.deckForm = {
+        title: "",
+        csv: ""
+      };
+      this.showModal = false;
     }
   }
 };
